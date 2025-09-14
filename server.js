@@ -27,6 +27,26 @@ io.on("connection",(socket)=>{
         allusers[username] = {username,id:socket.id}
         io.emit("joined",allusers);
     })
+
+    socket.on("offer", ({from,to,offer}) => {
+      console.log({from,to,offer})
+      io.to(allusers[to].id).emit("offer", {from,to,offer})
+    })
+    socket.on("answer", ({from,to,answer}) => {
+      console.log({from,to,answer})
+      io.to(allusers[from].id).emit("answer", {from,to,answer})
+    })
+    socket.on("icecandidate", candidate=>{
+      socket.broadcast.emit("icecandidate", candidate)
+    })
+    socket.on("end-call", ({from,to})=>{
+      io.to(allusers[to].id).emit("end-call", ({from,to}))
+    })
+    socket.on("call-ended", caller =>{
+      const [from,to] = caller;
+      io.to(allusers[to].id).emit("call-ended", caller)
+      io.to(allusers[from].id).emit("call-ended", caller)
+    })
 })
 
 server.listen(port, () => {
