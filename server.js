@@ -16,7 +16,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 app.use(express.static("public"))
 
 app.get('/', (req, res) => {
-  console.log("Hello");
   res.sendFile(join(__dirname + "/app/index.html"))
 })
 
@@ -34,7 +33,17 @@ io.on("connection", (socket) => {
       allusers[room] = {};
     }
     allusers[room][username] = { username, id: socket.id };
-    io.emit("joined room", allusers);
+    socket.join(room)
+    // io.emit("joined room", allusers);
+    io.to(room).emit("joined room", allusers[room]);
+
+    const users = Object.keys(allusers[room]);
+    if (users.length === 2) {
+      const newUser = username;
+      const existingUser = users.find(u => u !== newUser);
+      // send a targeted event to the existing user only
+      io.to(allusers[room][existingUser].id).emit("start-call", { to: newUser });
+    }
   })
 
   socket.on("offer", ({ from, to, offer }) => {

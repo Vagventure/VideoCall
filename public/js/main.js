@@ -3,9 +3,10 @@ const allUsersHtml = document.getElementById("allusers");
 const localVideo = document.getElementById("localVideo")
 const remoteVideo = document.getElementById("remoteVideo")
 const endCallBtn = document.getElementById("end-call-btn")
-const roomId = document.getElementById("roomid")
+const roomId = document.querySelector(".room-id")
 const username = document.getElementById("username");
 const joinBtn = document.getElementById("join-room")
+const room = document.getElementById("roomid")
 let localStream;
 let currentRoomId;
 const socket = io()
@@ -63,8 +64,8 @@ const roomIdGenerator = () => {
 
 joinBtn.addEventListener("click", () => {
     const inputContainer = document.querySelector(".username-input")
-    if (username.value != "" && roomId.value != "") {
-        socket.emit("join room", ({ username: username.value, room: roomId.value }))
+    if (username.value != "" && room.value != "") {
+        socket.emit("join room", ({ username: username.value, room: room.value }))
     }
     inputContainer.classList.add("hidden");
 
@@ -133,14 +134,14 @@ socket.on("joined room", allusers => {
 
                 button.innerText = `${user}`;
                 div.appendChild(button);
-                
+
             }
             li.appendChild(div);
 
             allUsersHtml.appendChild(li);
         }
     }
-
+    
     createUsersHtml();
 })
 
