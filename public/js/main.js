@@ -22,6 +22,11 @@ const PeerConnection = (function () {
             iceServers: [
                 {
                     urls: "stun:stun.l.google.com:19302"
+                },
+                {
+                    urls: "turn:relay1.expressturn.com:3478",
+                    username: "expressturn",
+                    credential: "expressturn"
                 }
             ]
         }
@@ -141,24 +146,24 @@ socket.on("joined room", allusers => {
             allUsersHtml.appendChild(li);
         }
     }
-    
+
     createUsersHtml();
 })
 
-socket.on("offer", async ({ from, to, offer }) => {
+socket.on("offer", async ({ from, to, offer, room }) => {
     const pc = PeerConnection.getInstance();
     await pc.setRemoteDescription(offer);
     const answer = await pc.createAnswer();
     await pc.setLocalDescription(answer);
-    socket.emit("answer", ({ from, to, answer: pc.localDescription }))
+    socket.emit("answer", ({ from, to, answer: pc.localDescription, room }))
     caller = [from, to]
 })
-socket.on("answer", async ({ from, to, answer }) => {
+socket.on("answer", async ({ from, to, answer, room }) => {
     const pc = PeerConnection.getInstance();
     await pc.setRemoteDescription(answer);
     // show end call button
     endCallBtn.style.display = "block"
-    socket.emit("end-call", ({ from, to }))
+    socket.emit("end-call", ({ from, to, room }))
     caller = [from, to]
 });
 socket.on("icecandidate", async candidate => {
@@ -171,13 +176,16 @@ socket.on("end-call", ({ from, to }) => {
 socket.on("call-ended", caller => {
     EndCall();
 })
-const StartCall = async (user) => {
-    console.log(user);
+socket.on("start-call", ({ to, room }) => {
+    StartCall(to, room);
+})
+const StartCall = async (user, room) => {
+    console.log("Calling to : ", user);
     const pc = PeerConnection.getInstance();
     const offer = await pc.createOffer();
     console.log({ offer })
     await pc.setLocalDescription(offer)
-    socket.emit("offer", { from: username.value, to: user, offer: pc.localDescription })
+    socket.emit("offer", { from: username.value, to: user, offer: pc.localDescription, room })
 }
 
 const EndCall = async () => {

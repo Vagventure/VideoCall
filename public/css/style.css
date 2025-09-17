@@ -130,6 +130,7 @@ ul li {
 	width: 70vw;
 	height: 80vh;
 	background: black;
+	outline: 3px solid black;
 	overflow: hidden;
 }
 
