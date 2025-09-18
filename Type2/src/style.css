@@ -1,0 +1,9 @@
+.video-streams{
+height: 90vh;
+width: 90vh;
+padding: 10px;
+display: flex;
+gap: 50px;
+align-items: center;
+margin: auto;
+}

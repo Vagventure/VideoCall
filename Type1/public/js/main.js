@@ -24,9 +24,14 @@ const PeerConnection = (function () {
                     urls: "stun:stun.l.google.com:19302"
                 },
                 {
-                    urls: "turn:relay1.expressturn.com:3478",
-                    username: "expressturn",
-                    credential: "expressturn"
+                    urls: "turn:global.relay.metered.ca:80",
+                    username: "openai",
+                    credential: "openai123"
+                },
+                {
+                    urls: "turns:global.relay.metered.ca:443",
+                    username: "openai",
+                    credential: "openai123"
                 }
             ]
         }
@@ -42,10 +47,15 @@ const PeerConnection = (function () {
 
         peerConnection.onicecandidate = function (event) {
             if (event.candidate) {
-                console.log(event.candidate)
+                console.log(event.candidate.candidate)
                 socket.emit("icecandidate", event.candidate)
             }
         }
+
+        peerConnection.oniceconnectionstatechange = () => {
+            console.log("ICE connection state:", peerConnection.iceConnectionState);
+        };
+
         // console.log(peerConnection)
         return peerConnection;
     }
@@ -67,23 +77,23 @@ const roomIdGenerator = () => {
     roomId.innerText = `Your room id: ${room}`
 }
 
-joinBtn.addEventListener("click", () => {
-    const inputContainer = document.querySelector(".username-input")
-    if (username.value != "" && room.value != "") {
-        socket.emit("join room", ({ username: username.value, room: room.value }))
-    }
-    inputContainer.classList.add("hidden");
-
-})
-
-// createBtn.addEventListener("click", ()=>{
+// joinBtn.addEventListener("click", () => {
 //     const inputContainer = document.querySelector(".username-input")
-//     if(username.value != ""){
-//         socket.emit("join user",username.value)
+//     if (username.value != "" && room.value != "") {
+//         socket.emit("join room", ({ username: username.value, room: room.value }))
 //     }
-//     inputContainer.style.display = 'none';
+//     inputContainer.classList.add("hidden");
 
 // })
+
+createBtn.addEventListener("click", ()=>{
+    const inputContainer = document.querySelector(".username-input")
+    if(username.value != ""){
+        socket.emit("join user",username.value)
+    }
+    inputContainer.style.display = 'none';
+
+})
 
 endCallBtn.addEventListener("click", () => {
     socket.emit("call-ended", caller)
@@ -176,16 +186,20 @@ socket.on("end-call", ({ from, to }) => {
 socket.on("call-ended", caller => {
     EndCall();
 })
-socket.on("start-call", ({ to, room }) => {
-    StartCall(to, room);
+// socket.on("start-call", ({ to, room }) => {
+//     StartCall(to, room);
+// })
+socket.on("start-call", ({ to }) => {
+    StartCall(to);
 })
-const StartCall = async (user, room) => {
+const StartCall = async (user) => {
     console.log("Calling to : ", user);
     const pc = PeerConnection.getInstance();
     const offer = await pc.createOffer();
     console.log({ offer })
     await pc.setLocalDescription(offer)
-    socket.emit("offer", { from: username.value, to: user, offer: pc.localDescription, room })
+    socket.emit("offer", { from: username.value, to: user, offer: pc.localDescription })
+    // socket.emit("offer", { from: username.value, to: user, offer: pc.localDescription, room })
 }
 
 const EndCall = async () => {
@@ -204,3 +218,5 @@ const StartMyCamera = async () => {
 }
 StartMyCamera();
 roomIdGenerator();
+
+// .\cloudflared.exe tunnel --url http://localhost:3000
