@@ -1,9 +1,53 @@
-.video-streams{
-height: 90vh;
-width: 90vh;
-padding: 10px;
-display: flex;
-gap: 50px;
-align-items: center;
-margin: auto;
+.video-streams {
+    height: 83vh;
+    width: 90vw;
+    padding: 10px;
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    position: relative;
+    margin: auto;
+}
+
+h2 {
+    text-align: center;
+    color: white;
+}
+
+.row>div {
+    margin: auto;
+    width: fit-content;
+}
+
+body {
+    background-color: steelblue;
+}
+
+button {
+    width: 115px;
+    height: 30px;
+    padding: 3px;
+    border-radius: 20px;
+    background-color: gainsboro;
+    font-size: inherit;
+}
+
+.local-video {
+    width: 300px;
+    height: 200px;
+    outline: 3px solid rgb(239, 7, 7);
+    position: absolute;
+    left: 181px;
+    top: 23px;
+    z-index: 10;
+}
+
+
+.remote-video {
+    width: 70vw;
+    height: 80vh;
+    margin: auto;
+    background: black;
+    outline: 3px solid black;
+    overflow: hidden;
 }
