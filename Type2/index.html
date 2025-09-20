@@ -3,26 +3,38 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Web SDK Video Quickstart</title>
+  <title>Web Video Call</title>
   <link rel="stylesheet" href="/src/style.css" />
 
 </head>
 
 <body>
-  <h2 class="left-align">Video Call:P2P</h2>
-  <div class="row">
-    <div>
-      <button type="button" id="join">Join</button>
-      <button type="button" id="leave">Leave</button>
-      <input id="room" value type="text" placeholder="Enter RoomID">
+  <div class="container">
+    <div class="row">
+      <h2 class="left-align">Video Call:P2P</h2>
+      <div>
+        <button type="button" id="join">Join</button>
+        <button type="button" id="leave">Leave</button>
+      </div>
     </div>
-  </div>
-  <div class="video-streams">
+    <div>
+      <h2 class="left-align">Video Call:P2P</h2>
+      <div class="Room-box">
+        <span>Join a Room</span>
+        <div class="room-info">
+          <input type="text" id="roomId" placeholder="Enter RoomID">
+          <input type="text" id="roomPass" placeholder="Enter Password">
+        </div>
+        <button id="join-room" type="button">Join</button>
+      </div>
+    </div>
+
+    <div class="video-streams">
+
+    </div>
 
   </div>
-
   <script type="module" src="/src/main.js"></script>
 </body>
 
 </html>
-

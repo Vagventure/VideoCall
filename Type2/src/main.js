@@ -90,9 +90,10 @@ await client.leave()
 
 function setupButtonHandlers(){
   // document.getElementById("join").onclick = joinChannel();
-  document.getElementById("join").addEventListener("click", async () => {
-    channel = document.getElementById("room").value;
-    console.log("Joining channel:", channel);
+  document.getElementById("join-room").addEventListener("click", async () => {
+    channel = document.getElementById("roomId").value;
+    token = document.getElementById("roomPass").value;
+    console.log("Joining channel:", channel , " with password : ", token);
     // await joinChannel();
 });
 
