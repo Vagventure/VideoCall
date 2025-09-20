@@ -5,9 +5,9 @@ let client = null;
 let localVideoTrack = null;
 let localAudioTrack = null;
 
-let appId = import.meta.env.VITE_AppId;
-let channel = import.meta.env.VITE_Channel;
-let token = import.meta.env.VITE_Token;
+let appId = "7f3f3c4be24b46f0aadc1c56944f45f6";
+let channel = "Cars24";
+let token = "007eJxTYKhP6az6tNiLac2/mtsWz3eJhkeZXT/2+JmnxOaah0sV5kUpMJinGacZJ5skpRqZJJmYpRkkJqYkGyabmlmamKSZmKaZibuey2gIZGTIbitlZGSAQBCfjcE5sajYyISBAQAZtCEr";
 let uid = 0;
 
 function initializeClient() {
@@ -35,6 +35,7 @@ function setupEventListeners() {
 }
 
 async function joinChannel (){
+  // console.log("hello")
   await client.join(appId,channel,token,uid);
   await createLocalTracks();
   await publishLocalTracks();
@@ -88,13 +89,20 @@ await client.leave()
 }
 
 function setupButtonHandlers(){
-  document.getElementById("join").onclick = joinChannel();
+  // document.getElementById("join").onclick = joinChannel();
+  document.getElementById("join").addEventListener("click", async () => {
+    channel = document.getElementById("room").value;
+    console.log("Joining channel:", channel);
+    await joinChannel();
+});
+
+
   document.getElementById("leave").onclick = leaveChannel();
 }
 
 function startBasicCall(){
   initializeClient();
-  window.load = setupButtonHandlers;
+  window.onload = setupButtonHandlers;
 }
 
 startBasicCall();
