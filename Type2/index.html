@@ -4,37 +4,51 @@
 <head>
   <meta charset="UTF-8" />
   <title>Web Video Call</title>
-  <link rel="stylesheet" href="/src/style.css" />
+  <link rel="stylesheet" href="/join.css" />
 
 </head>
 
 <body>
   <div class="container">
-    <div class="row">
-      <h2 class="left-align">Video Call:P2P</h2>
-      <div>
-        <button type="button" id="join">Join</button>
-        <button type="button" id="leave">Leave</button>
-      </div>
-    </div>
-    <div>
+
+    <div class="Room-box-outer">
       <h2 class="left-align">Video Call:P2P</h2>
       <div class="Room-box">
         <span>Join a Room</span>
         <div class="room-info">
           <input type="text" id="roomId" placeholder="Enter RoomID">
-          <input type="text" id="roomPass" placeholder="Enter Password">
+          <!-- <input type="text" id="roomPass" placeholder="Enter Password"> -->
         </div>
         <button id="join-room" type="button">Join</button>
       </div>
     </div>
 
-    <div class="video-streams">
-
-    </div>
-
   </div>
-  <script type="module" src="/src/main.js"></script>
+  <script>
+    document.getElementById("join-room").addEventListener("click", async () => {
+      const room = document.getElementById("roomId").value;
+      if (room == "") {
+        alert("Enter a roomID first")
+        return;
+      }
+      console.log(room)
+      const res = await fetch(`http://localhost:3000/Generate-Token?channelName=${room}`)
+      const data = await res.json()
+      const { roomId, uid, token } = data;
+      window.location.href = `/room.html?roomId=${roomId}&uid=${uid}&token=${encodeURIComponent(token)}`;
+    })
+
+  </script>
 </body>
 
 </html>
+
+
+
+<!-- const page = await fetch("http://localhost:3000/room", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ roomId, uid, token })
+      }); -->
