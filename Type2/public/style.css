@@ -1,4 +1,4 @@
-.container{
+.container {
     height: 95vh;
     display: flex;
     flex-direction: column;
@@ -39,6 +39,7 @@ button {
     border-radius: 20px;
     background-color: gainsboro;
     font-size: inherit;
+    cursor: pointer;
 }
 
 .local-video {
@@ -47,7 +48,7 @@ button {
     outline: 3px solid rgb(239, 7, 7);
     position: absolute;
     left: 181px;
-    top: 23px;
+    top: 15px;
     z-index: 10;
 }
 
@@ -60,3 +61,27 @@ button {
     overflow: hidden;
 }
 
+.controls {
+    display: flex;
+    margin: auto;
+    align-items: center;
+    gap: 20px;
+}
+
+.off {
+    width: 55px;
+    height: 55px;
+    padding: 10px;
+    background-color: red;
+    border-radius: 30px;
+    border: none;
+}
+
+.on {
+    background-color: black;
+    width: 55px;
+    height: 55px;
+    padding: 10px;
+    border-radius: 30px;
+    border: none;
+}

@@ -7,14 +7,14 @@ let localAudioTrack = null;
 
 console.log("124")
 
-let appId = process.env.APP_ID;
+let appId = "";
 const params = new URLSearchParams(window.location.search);
 const channel = params.get("roomId");
 const uid = params.get("uid");
 const token = params.get("token");
 
-function initializeClient() {
-  client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+async function initializeClient() {
+  client = await AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
   setupEventListeners();
 }
 
@@ -40,6 +40,7 @@ function setupEventListeners() {
 }
 
 async function joinChannel() {
+  console.log("join clicked")
   // console.log("hello")
   await client.join(appId, channel, token, uid);
   await createLocalTracks();
@@ -79,6 +80,7 @@ function displayRemoteVideo(user) {
 }
 
 async function leaveChannel() {
+  console.log("Leave clicked")
   localAudioTrack.close()
   localVideoTrack.close()
 
@@ -93,36 +95,63 @@ async function leaveChannel() {
   await client.leave()
 }
 
+async function toggleMic(){
+  if(!localAudioTrack[0]) return;
+
+  const audioTrack = localAudioTrack[0];
+  if(audioTrack.isMuted){
+    await audioTrack.setMuted(false);
+    console.log("Mic unmuted")
+  }else{
+    await audioTrack.setMuted(true);
+    console.log("Mic muted")
+  }
+}
+
+async function toggleCamera() {
+  if (!localVideoTrack[1]) return; // Camera is usually second
+
+  const videoTrack = localVideoTrack[1];
+  if (videoTrack.isMuted) {
+    await videoTrack.setMuted(false);
+    console.log("Camera turned ON");
+  } else {
+    await videoTrack.setMuted(true);
+    console.log("Camera turned OFF");
+  }
+}
+
+
+let mute = false;
+document.getElementById("mute").addEventListener("click", async () => {
+  document.getElementById("mute").classList.toggle("on")
+  if(!mute){
+    document.getElementById("mute").innerHTML = `<img src="audio.svg">`
+    mute = true;
+  }else{
+    document.getElementById("mute").innerHTML = `<img src="mic.svg">`
+    mute = false;
+  }
+  await toggleMic();
+});
+
+let videOff = false;
+document.getElementById("video").addEventListener("click", async () => {
+  document.getElementById("video").classList.toggle("on");
+  if(!videOff){
+    document.getElementById("video").innerHTML = `<img src="video.svg">`
+    videOff = true;
+  }else{
+    document.getElementById("video").innerHTML = `<img src="videoOn.svg">`
+    videOff = false;
+  }
+  await toggleCamera();
+});
+
+
 function setupButtonHandlers() {
-  document.getElementById("join").onclick = joinChannel();
-  //   document.getElementById("join-room").addEventListener("click", async () => {
-  //     channel = document.getElementById("roomId").value;
-  //     token = document.getElementById("roomPass").value;
-  //     console.log("Joining channel:", channel , " with password : ", token);
-  //     const div1 = document.querySelector(".Room-box-outer");
-  //     const div2 = document.querySelector(".video-streams")
-  //     const div3 = document.querySelector(".row")
-  //     div1.classList.add("hidden");
-  //     div2.classList.toggle("hidden");
-  //     div3.classList.toggle("hidden");
-  //     await joinChannel();
-  // });
-
-  // console.log("Setting up button handlers...");
-
-  // const joinBtn = document.getElementById("join-room");
-  // console.log("joinBtn:", joinBtn);
-
-  // joinBtn.addEventListener("click", async () => {
-  //   console.log("Join button clicked!");
-  //   channel = document.getElementById("roomId").value;
-  //   token = document.getElementById("roomPass").value;
-  //   console.log("Joining channel:", channel, "with token:", token);
-  //   await joinChannel();
-  // });
-
-
-  document.getElementById("leave").onclick = leaveChannel();
+  document.getElementById("leave").onclick = leaveChannel;
+  joinChannel();
 }
 
 function startBasicCall() {
