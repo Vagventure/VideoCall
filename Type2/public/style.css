@@ -85,3 +85,11 @@ button {
     border-radius: 30px;
     border: none;
 }
+
+.join{
+    display: none;
+}
+
+.create{
+    display: none;
+}

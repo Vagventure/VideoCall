@@ -15,9 +15,17 @@
       <h2 class="left-align">Video Call:P2P</h2>
       <div class="Room-box">
         <span>Join a Room</span>
+        <div>
+          <button class="createBtn">Create</button>
+          <button class="joinBtn">Join</button>
+        </div>
         <div class="room-info">
+          <input type="text" id="roomId" placeholder="Create RoomID">
+          <input type="text" id="roomPass" placeholder="Create Password">
+        </div>
+        <div class="room-info join">
           <input type="text" id="roomId" placeholder="Enter RoomID">
-          <!-- <input type="text" id="roomPass" placeholder="Enter Password"> -->
+          <input type="text" id="roomPass" placeholder="Enter Password">
         </div>
         <button id="join-room" type="button">Join</button>
       </div>
@@ -36,6 +44,19 @@
       const data = await res.json()
       const { roomId, uid, token } = data;
       window.location.href = `/room?roomId=${roomId}&uid=${uid}&token=${encodeURIComponent(token)}`;
+    })
+    let firstclick = false;
+    document.querySelector(".createBtn").addEventListener('click', ()=>{
+      if(firstclick){
+        document.querySelector(".room-info").classList.remove('create');
+        document.getElementsByClassName("room-info")[1].classList.toggle('join');
+      }
+  })
+  
+  document.querySelector(".joinBtn").addEventListener('click', ()=>{
+    firstclick = true;
+    document.querySelector(".room-info").classList.add('create');
+    document.querySelector(".join").classList.toggle('join');
     })
 
   </script>
