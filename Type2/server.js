@@ -30,6 +30,8 @@ app.get('/Generate-Token', (req, res) => {
   const channel = req.query.channelName.trim()
   const pass = req.query.password.trim()
 
+  console.log("Creating room: ",channel," with pass: ", pass);
+
   rooms[channel] = {password:pass};
   console.log(rooms)
 
@@ -59,6 +61,8 @@ app.get('/Generate-Token-Join', (req, res) => {
   const channel = req.query.channelName.trim()
   const pass = req.query.password.trim()
 
+  console.log("Joining room: ",channel," with pass: ", pass);
+
   if(!rooms[channel]){
    return res.send({
       success: false,
@@ -66,10 +70,11 @@ app.get('/Generate-Token-Join', (req, res) => {
     });
   }
 
-  if(rooms[channel] && rooms[channel].password !== pass){
+  if(rooms[channel] && rooms[channel].password != pass){
    return res.send({
       success: false,
-      message: "Invalid Password"
+      message: "Invalid Password",
+      pass: rooms[channel].password
     });
   }
 

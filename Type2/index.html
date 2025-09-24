@@ -21,11 +21,11 @@
         </div>
         <div class="room-info">
           <input type="text" class="create-room" id="roomIdC" placeholder="Create RoomID">
-          <input type="text" id="roomPass" placeholder="Create Password">
+          <input type="text" id="roomPassC" placeholder="Create Password">
         </div>
         <div class="room-info join">
           <input type="text" class="join-room" id="roomIdJ" placeholder="Enter RoomID">
-          <input type="text" id="roomPass" placeholder="Enter Password">
+          <input type="text" id="roomPassJ" placeholder="Enter Password">
         </div>
         <button id="create" type="button">Create</button>
         <button id="join" type="button">Join</button>
@@ -36,7 +36,7 @@
   <script>
     document.getElementById("join").addEventListener("click", async () => {
       const room = document.getElementById("roomIdJ").value;
-      const password = document.getElementById("roomPass").value;
+      const password = document.getElementById("roomPassJ").value;
       if (room == "") {
         alert("Enter a roomID first")
         return;
@@ -53,7 +53,7 @@
 
     document.getElementById("create").addEventListener("click", async () => {
       const room = document.getElementById("roomIdC").value;
-      const password = document.getElementById("roomPass").value;
+      const password = document.getElementById("roomPassC").value;
       if (room == "") {
         alert("Enter a roomID first")
         return;

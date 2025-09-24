@@ -24,6 +24,10 @@ function setupEventListeners() {
     console.log("user to mdt subscibe success")
 
     if (mediaType === "video") {
+      const localPlayerContainer = document.querySelector(".local-video")
+      localPlayerContainer.style.width = "";
+      localPlayerContainer.style.height = "";
+      localPlayerContainer.style.left = "181px";
       displayRemoteVideo(user);
     }
     if (mediaType === "audio") {
@@ -35,6 +39,9 @@ function setupEventListeners() {
     {
       const remotePlayerContainer = document.getElementById(user.uid);
       remotePlayerContainer && remotePlayerContainer.remove();
+      const localPlayerContainer = document.querySelector(".local-video")
+      localPlayerContainer.style.width = "100%";
+      localPlayerContainer.style.height = "100%";
     }
   })
 }
@@ -61,8 +68,10 @@ async function publishLocalTracks() {
 function displayLocalVideo() {
   const streams = document.querySelector(".video-streams")
   const localPlayerContainer = document.createElement("div")
-  localPlayerContainer.className = "local-video"
+  localPlayerContainer.className = "video local-video"
   localPlayerContainer.id = uid;
+  localPlayerContainer.style.width = "100%";
+  localPlayerContainer.style.height = "100%";
   streams.appendChild(localPlayerContainer);
   localVideoTrack.play(localPlayerContainer)
 
@@ -72,7 +81,7 @@ function displayRemoteVideo(user) {
   const remoteVideoTrack = user.videoTrack;
   const streams = document.querySelector(".video-streams")
   const remotePlayerContainer = document.createElement("div")
-  remotePlayerContainer.className = "remote-video"
+  remotePlayerContainer.className = "video remote-video"
   remotePlayerContainer.id = user.uid.toString();
   streams.appendChild(remotePlayerContainer);
   remoteVideoTrack.play(remotePlayerContainer)
@@ -125,10 +134,10 @@ async function toggleCamera() {
 let mute = false;
 document.getElementById("mute").addEventListener("click", async () => {
   document.getElementById("mute").classList.toggle("on")
-  if(!mute){
+  if (!mute) {
     document.getElementById("mute").innerHTML = `<img src="audio.svg">`
     mute = true;
-  }else{
+  } else {
     document.getElementById("mute").innerHTML = `<img src="mic.svg">`
     mute = false;
   }
@@ -138,10 +147,10 @@ document.getElementById("mute").addEventListener("click", async () => {
 let videOff = false;
 document.getElementById("video").addEventListener("click", async () => {
   document.getElementById("video").classList.toggle("on");
-  if(!videOff){
+  if (!videOff) {
     document.getElementById("video").innerHTML = `<img src="video.svg">`
     videOff = true;
-  }else{
+  } else {
     document.getElementById("video").innerHTML = `<img src="videoOn.svg">`
     videOff = false;
   }
