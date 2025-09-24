@@ -48,7 +48,7 @@ button {
     outline: 3px solid rgb(239, 7, 7);
     position: absolute;
     left: 181px;
-    top: 15px;
+    top: 12px;
     z-index: 10;
 }
 
@@ -86,10 +86,3 @@ button {
     border: none;
 }
 
-.join{
-    display: none;
-}
-
-.create{
-    display: none;
-}

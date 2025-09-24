@@ -95,31 +95,31 @@ async function leaveChannel() {
   await client.leave()
 }
 
-async function toggleMic(){
-  if(!localAudioTrack[0]) return;
+async function toggleMic() {
+  if (!localAudioTrack) return;
 
-  const audioTrack = localAudioTrack[0];
-  if(audioTrack.isMuted){
-    await audioTrack.setMuted(false);
-    console.log("Mic unmuted")
-  }else{
-    await audioTrack.setMuted(true);
-    console.log("Mic muted")
+  if (localAudioTrack.enabled) {
+    await localAudioTrack.setEnabled(false);
+    console.log("Mic muted");
+  } else {
+    await localAudioTrack.setEnabled(true);
+    console.log("Mic unmuted");
   }
 }
+
 
 async function toggleCamera() {
-  if (!localVideoTrack[1]) return; // Camera is usually second
+  if (!localVideoTrack) return;
 
-  const videoTrack = localVideoTrack[1];
-  if (videoTrack.isMuted) {
-    await videoTrack.setMuted(false);
-    console.log("Camera turned ON");
-  } else {
-    await videoTrack.setMuted(true);
+  if (localVideoTrack.enabled) {
+    await localVideoTrack.setEnabled(false);
     console.log("Camera turned OFF");
+  } else {
+    await localVideoTrack.setEnabled(true);
+    console.log("Camera turned ON");
   }
 }
+
 
 
 let mute = false;

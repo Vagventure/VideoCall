@@ -15,49 +15,94 @@
       <h2 class="left-align">Video Call:P2P</h2>
       <div class="Room-box">
         <span>Join a Room</span>
-        <div>
-          <button class="createBtn">Create</button>
+        <div class="swapper">
+          <button class="createBtn selected">Create</button>
           <button class="joinBtn">Join</button>
         </div>
         <div class="room-info">
-          <input type="text" id="roomId" placeholder="Create RoomID">
+          <input type="text" class="create-room" id="roomIdC" placeholder="Create RoomID">
           <input type="text" id="roomPass" placeholder="Create Password">
         </div>
         <div class="room-info join">
-          <input type="text" id="roomId" placeholder="Enter RoomID">
+          <input type="text" class="join-room" id="roomIdJ" placeholder="Enter RoomID">
           <input type="text" id="roomPass" placeholder="Enter Password">
         </div>
-        <button id="join-room" type="button">Join</button>
+        <button id="create" type="button">Create</button>
+        <button id="join" type="button">Join</button>
       </div>
     </div>
 
   </div>
   <script>
-    document.getElementById("join-room").addEventListener("click", async () => {
-      const room = document.getElementById("roomId").value;
+    document.getElementById("join").addEventListener("click", async () => {
+      const room = document.getElementById("roomIdJ").value;
+      const password = document.getElementById("roomPass").value;
       if (room == "") {
         alert("Enter a roomID first")
         return;
       }
       console.log(room)
-      const res = await fetch(`http://localhost:3000/Generate-Token?channelName=${room}`)
+      const res = await fetch(`http://localhost:3000/Generate-Token-Join?channelName=${room}&password=${password}`)
       const data = await res.json()
+      if(!data.success){
+        return alert(data.message);
+      }
       const { roomId, uid, token } = data;
       window.location.href = `/room?roomId=${roomId}&uid=${uid}&token=${encodeURIComponent(token)}`;
     })
+
+    document.getElementById("create").addEventListener("click", async () => {
+      const room = document.getElementById("roomIdC").value;
+      const password = document.getElementById("roomPass").value;
+      if (room == "") {
+        alert("Enter a roomID first")
+        return;
+      }
+      console.log(room)
+      const res = await fetch(`http://localhost:3000/Generate-Token?channelName=${room}&password=${password}`)
+      const data = await res.json()
+      
+      const { roomId, uid, token } = data;
+      window.location.href = `/room?roomId=${roomId}&uid=${uid}&token=${encodeURIComponent(token)}`;
+    })
+
     let firstclick = false;
-    document.querySelector(".createBtn").addEventListener('click', ()=>{
-      if(firstclick){
+    let onCreate = true;
+    document.querySelector(".createBtn").addEventListener('click', () => {
+      if (firstclick) {
+        onCreate = true;
+        buttonshuffler();
+        document.querySelector(".createBtn").classList.add("selected")
+        document.querySelector(".joinBtn").classList.remove("selected")
         document.querySelector(".room-info").classList.remove('create');
         document.getElementsByClassName("room-info")[1].classList.toggle('join');
       }
-  })
-  
-  document.querySelector(".joinBtn").addEventListener('click', ()=>{
-    firstclick = true;
-    document.querySelector(".room-info").classList.add('create');
-    document.querySelector(".join").classList.toggle('join');
     })
+
+    document.querySelector(".joinBtn").addEventListener('click', () => {
+      firstclick = true;
+      onCreate = false;
+      buttonshuffler();
+      document.querySelector(".createBtn").classList.remove("selected")
+      document.querySelector(".joinBtn").classList.add("selected")
+      document.querySelector(".room-info").classList.add('create');
+      document.querySelector(".join").classList.toggle('join');
+    })
+
+    const buttonshuffler = () => {
+      const joinbutton = document.getElementById("join")
+      const createbutton = document.getElementById("create")
+
+      if (!onCreate) {
+        createbutton.style.display = "none";
+        joinbutton.style.display = "block";
+      } else {
+        createbutton.style.display = "block";
+        joinbutton.style.display = "none";
+      }
+    }
+
+    buttonshuffler();
 
   </script>
 </body>
