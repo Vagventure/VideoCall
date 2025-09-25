@@ -1,5 +1,3 @@
-// import AgoraRTC from "agora-rtc-sdk-ng"
-
 let client = null;
 
 let localVideoTrack = null;
@@ -27,8 +25,9 @@ function setupEventListeners() {
       const localPlayerContainer = document.querySelector(".local-video")
       localPlayerContainer.style.width = "";
       localPlayerContainer.style.height = "";
-      localPlayerContainer.style.left = "181px";
+      // localPlayerContainer.style.left = "181px";
       displayRemoteVideo(user);
+      console.log("remote user published")
     }
     if (mediaType === "audio") {
       user.audioTrack.play();
@@ -100,8 +99,9 @@ async function leaveChannel() {
     const playerContainer = document.getElementById(user.uid);
     playerContainer && playerContainer.remove();
   });
-
+  alert("You left the room")
   await client.leave()
+  window.location.href = "/";
 }
 
 async function toggleMic() {

@@ -16,8 +16,10 @@ app.use(express.static("public"))
 const APP_ID = process.env.APP_ID;
 const APP_CERTIFICATE = process.env.APP_CERTIFICATE;
 
-const rooms = {};
+let rooms = {};
 app.get('/', (req, res) => {
+  rooms = {};
+  console.log("List of rooms: ", rooms)
   res.sendFile(join(__dirname + "/index.html"))
 })
 
@@ -28,7 +30,7 @@ app.get('/room', (req, res) => {
 
 app.get('/Generate-Token', (req, res) => {
   const channel = req.query.channelName.trim()
-  const pass = req.query.password.trim()
+  const pass = String(req.query.password).trim()
 
   console.log("Creating room: ",channel," with pass: ", pass);
 
@@ -59,7 +61,7 @@ app.get('/Generate-Token', (req, res) => {
 
 app.get('/Generate-Token-Join', (req, res) => {
   const channel = req.query.channelName.trim()
-  const pass = req.query.password.trim()
+  const pass = String(req.query.password).trim()
 
   console.log("Joining room: ",channel," with pass: ", pass);
 
@@ -70,13 +72,16 @@ app.get('/Generate-Token-Join', (req, res) => {
     });
   }
 
-  if(rooms[channel] && rooms[channel].password != pass){
+  if(rooms[channel] && rooms[channel].password !== pass){
+  console.log("Credentials didnt matched")
    return res.send({
       success: false,
       message: "Invalid Password",
       pass: rooms[channel].password
     });
   }
+
+  console.log("Credentials matched")
 
   console.log(rooms)
 
@@ -98,7 +103,12 @@ app.get('/Generate-Token-Join', (req, res) => {
   const tokenWithUid = RtcTokenBuilder.buildTokenWithUid(APP_ID, APP_CERTIFICATE, channel, uid, role, tokenExpirationInSeconds, privilegeExpireTs);
   // console.log("Token is : ", tokenWithUid);
 
-  res.send({ roomId: channel, uid: uid, token: tokenWithUid });
+  return res.send({
+    success: true,
+    roomId: channel,
+    uid: uid,
+    token: tokenWithUid 
+  });
 })
 
 app.listen(port, () => {

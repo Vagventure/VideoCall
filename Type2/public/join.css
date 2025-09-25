@@ -4,19 +4,34 @@ body {
 }
 
 #join{
-    width: 115px;
+    width: 85px;
     height: 30px;
     padding: 3px;
-    border-radius: 20px;
+    border-radius: 10px;
     background-color: gainsboro;
     font-size: inherit;
 }
 
+.Room-box-outer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.Heading {
+    text-align: center;
+    color: white;
+    font-size: 30px;
+    font-weight:bold;
+}
+
+
 #create{
-    width: 115px;
+    width: 85px;
     height: 30px;
     padding: 3px;
-    border-radius: 20px;
+    border-radius: 10px;
     background-color: gainsboro;
     font-size: inherit;
 }
