@@ -26,6 +26,19 @@ body {
     font-weight:bold;
 }
 
+.toast-container{
+    width: 100%;
+}
+
+.toast{
+    width: fit-content;
+    margin: auto;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+    color: white;
+    font-weight: bold;
+}
 
 #create{
     width: 85px;

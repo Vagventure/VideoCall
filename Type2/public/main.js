@@ -3,7 +3,7 @@ let client = null;
 let localVideoTrack = null;
 let localAudioTrack = null;
 
-console.log("124")
+// console.log("124")
 
 let appId = "";
 const params = new URLSearchParams(window.location.search);
@@ -157,6 +157,26 @@ document.getElementById("video").addEventListener("click", async () => {
   await toggleCamera();
 });
 
+
+function showToast(message, type = 'info') {
+  const container = document.getElementById("toast-container")
+  const toast = document.createElement("div")
+
+  const colors = {
+    info: "bg-blue-500",
+    success: "bg-green-500",
+    error: "bg-red-500",
+  }
+
+  toast.className = `px-4 py-2 rounded text-white shadow ${colors[type]}`
+  toast.innerText = message;
+
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove()
+  }, 3000)
+}
 
 function setupButtonHandlers() {
   document.getElementById("leave").onclick = leaveChannel;

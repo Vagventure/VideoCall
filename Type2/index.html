@@ -9,12 +9,14 @@
 </head>
 
 <body>
+  <div id="toast-container"></div>
+
   <div class="container">
 
     <div class="Room-box-outer">
       <span class="Heading">Video Call:P2P</span>
       <div class="Room-box">
-        <span>Join a Room</span>
+        <span class="Join-Create-Room">Create a Room</span>
         <div class="swapper">
           <button class="createBtn selected">Create</button>
           <button class="joinBtn">Join</button>
@@ -34,18 +36,40 @@
 
   </div>
   <script>
+
+    function showToast(message, type = "info") {
+      const container = document.getElementById("toast-container");
+      container.classList.add('toast')
+      const toast = document.createElement("div");
+
+      const colors = {
+        info: "blue",
+        success: "green",
+        error: "red",
+      };
+
+      container.style.backgroundColor = colors[type];
+      toast.innerText = message;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+        container.classList.remove('toast')
+      }, 3000);
+    }
+
     document.getElementById("join").addEventListener("click", async () => {
       const room = document.getElementById("roomIdJ").value;
       const password = document.getElementById("roomPassJ").value;
       if (room == "") {
-        alert("Enter a roomID first")
-        return;
+        return showToast("Enter a RoomId first", "error");
       }
       console.log(room)
       const res = await fetch(`http://localhost:3000/Generate-Token-Join?channelName=${room}&password=${password}`)
       const data = await res.json()
-      if(!data.success){
-        return alert(data.message);
+      if (!data.success) {
+        return showToast(data.message, "error");
       }
       const { roomId, uid, token } = data;
       window.location.href = `/room?roomId=${roomId}&uid=${uid}&token=${encodeURIComponent(token)}`;
@@ -55,13 +79,12 @@
       const room = document.getElementById("roomIdC").value;
       const password = document.getElementById("roomPassC").value;
       if (room == "") {
-        alert("Enter a roomID first")
-        return;
+        return showToast("Enter a RoomId first", "error");
       }
       console.log(room)
       const res = await fetch(`http://localhost:3000/Generate-Token?channelName=${room}&password=${password}`)
       const data = await res.json()
-      
+
       const { roomId, uid, token } = data;
       window.location.href = `/room?roomId=${roomId}&uid=${uid}&token=${encodeURIComponent(token)}`;
     })
@@ -90,15 +113,18 @@
     })
 
     const buttonshuffler = () => {
+
       const joinbutton = document.getElementById("join")
       const createbutton = document.getElementById("create")
 
       if (!onCreate) {
         createbutton.style.display = "none";
         joinbutton.style.display = "block";
+        document.querySelector(".Join-Create-Room").innerText = "Join a Room"
       } else {
         createbutton.style.display = "block";
         joinbutton.style.display = "none";
+        document.querySelector(".Join-Create-Room").innerText = "Create a Room"
       }
     }
 
