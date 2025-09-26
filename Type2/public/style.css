@@ -120,3 +120,21 @@ button {
     border: none;
     outline: none;
 }
+
+.toast-container{
+    width: 100%;
+}
+
+.toast{
+    width: fit-content;
+    margin: auto;
+    position: absolute;
+    transition: all ease-in-out;
+    bottom: 30px;
+    right: 30px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+    color: white;
+    font-weight: bold;
+}

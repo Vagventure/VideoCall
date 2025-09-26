@@ -99,6 +99,7 @@ async function leaveChannel() {
     const playerContainer = document.getElementById(user.uid);
     playerContainer && playerContainer.remove();
   });
+  // await showToast("You left the room", "info")
   alert("You left the room")
   await client.leave()
   window.location.href = "/";
@@ -158,23 +159,26 @@ document.getElementById("video").addEventListener("click", async () => {
 });
 
 
-function showToast(message, type = 'info') {
+async function showToast(message, type = 'info') {
   const container = document.getElementById("toast-container")
-  const toast = document.createElement("div")
+  container.classList.add('toast')
+  const toast = document.createElement("div");
 
   const colors = {
-    info: "bg-blue-500",
-    success: "bg-green-500",
-    error: "bg-red-500",
-  }
+    info: "blue",
+    success: "green",
+    error: "red",
+  };
 
-  toast.className = `px-4 py-2 rounded text-white shadow ${colors[type]}`
+  container.style.backgroundColor = colors[type];
   toast.innerText = message;
 
   container.appendChild(toast);
 
   setTimeout(() => {
     toast.remove()
+    container.classList.remove('toast')
+
   }, 3000)
 }
 

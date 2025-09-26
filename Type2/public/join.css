@@ -34,6 +34,7 @@ body {
     width: fit-content;
     margin: auto;
     padding: 10px;
+    transition: all ease-in-out 50ms;
     border-radius: 10px;
     background-color: white;
     color: white;
