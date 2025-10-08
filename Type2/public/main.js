@@ -4,6 +4,7 @@ let localVideoTrack = null;
 let localAudioTrack = null;
 
 // console.log("124")
+console.log("Testing")
 
 let appId = "";
 const params = new URLSearchParams(window.location.search);
