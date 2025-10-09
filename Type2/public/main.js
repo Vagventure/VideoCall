@@ -4,7 +4,7 @@ let localVideoTrack = null;
 let localAudioTrack = null;
 
 // console.log("124")
-console.log("Testing")
+console.log("Debugging AgoraSdk")
 
 let appId = "";
 const params = new URLSearchParams(window.location.search);
